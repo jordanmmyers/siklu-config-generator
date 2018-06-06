@@ -84,12 +84,12 @@ function generateConfig(form) {
 	var snmp = config.snmp;
 
 	if(portConfig == "north") {
-		var alias = {
+		var alias = [
 			"set eth eth1 alias eNB",
 			"set eth eth2 alias Customer",
-			"set eth eth3 alias Downlink",
-		};
-		var vlans = {
+			"set eth eth3 alias Downlink"
+		];
+		var vlans = [
 			"set vlan s1 1 egress c1,c2,c3,c4,c5,c6 untagged none history disable",
 			"set vlan s1 undef egress c1,c2,c3,c4,c5,c6 untagged none history disable",
 			"set vlan c1 1 egress host,s1 untagged host,s1 history disable",
@@ -112,13 +112,13 @@ function generateConfig(form) {
 			"set vlan c6 1-2 egress eth4,s1 untagged none history disable",
 			"set vlan c6 200 egress eth4,s1 untagged none history disable",
 			"set vlan c6 undef egress eth4,s1 untagged none history disable"
-		};
+		];
 	} else if(portConfig = "south") {
-		var alias = {
+		var alias = [
 			"set eth eth1 alias Uplink",
-			"set eth eth2 alias Raspberry Pi",
-		};
-		var vlans = {
+			"set eth eth2 alias Raspberry Pi"
+		];
+		var vlans = [
 			"set vlan s1 1 egress c1,c2,c3,c4,c5,c6 untagged none history disable",
 			"set vlan s1 undef egress c1,c2,c3,c4,c5,c6 untagged none history disable",
 			"set vlan c1 1 egress host,s1 untagged host,s1 history disable",
@@ -141,7 +141,7 @@ function generateConfig(form) {
 			"set vlan c6 1-2 egress eth4,s1 untagged none history disable",
 			"set vlan c6 200 egress eth4,s1 untagged none history disable",
 			"set vlan c6 undef egress eth4,s1 untagged none history disable"
-		};
+		];
 	}
 
 	var eh1200Configuration = [
@@ -184,7 +184,7 @@ function generateConfig(form) {
 		"# Setup system parameters",
                         systemName,
                         password,
-                        snmp.
+                        snmp,
                         "set ntp 1 server 10.252.245.131",
                         "set ntp 1 secondary-server 10.252.245.163",
                         "set ntp 1 tmz -7",
@@ -368,21 +368,27 @@ function generateConfig(form) {
                         document.getElementById("display").innerHTML = "";
                         document.getElementById("loader").style.display = "block";
                         setTimeout(function() {
-                                    document.getElementById("display").innerHTML = eh1200Configuration.join("<br />");
+                                    document.getElementById("display").innerHTML = eh1200Configuration.map(function(a) {
+                                        return Array.isArray(a) ? a.join("<br />") : a;
+                                    }).join("<br />");
                                     document.getElementById("loader").style.display = "none";
                         }, 500);
             } else if(form.radioModel.value == "EH2500FX") {
                         document.getElementById("display").innerHTML = "";
                         document.getElementById("loader").style.display = "block";
                         setTimeout(function() {
-                                    document.getElementById("display").innerHTML = eh2500Configuration.join("<br />");
+                                    document.getElementById("display").innerHTML = eh2500Configuration.map(function(a) {
+                                        return Array.isArray(a) ? a.join("<br />") : a;
+                                    }).join("<br />");
                                     document.getElementById("loader").style.display = "none";
                         }, 500);
             } else if(form.radioModel.value == "EH2500FX2") {
                         document.getElementById("display").innerHTML = "";
                         document.getElementById("loader").style.display = "block";
                         setTimeout(function() {
-                                    document.getElementById("display").innerHTML = eh2500Configuration2.join("<br />");
+                                    document.getElementById("display").innerHTML = eh2500Configuration2.map(function(a) {
+                                        return Array.isArray(a) ? a.join("<br />") : a;
+                                    }).join("<br />");
                                     document.getElementById("loader").style.display = "none";
                         }, 500);
             } else {
