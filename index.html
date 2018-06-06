@@ -1,0 +1,102 @@
+<html>
+<head>
+    <title>Siklu Config Generator v2</title>
+    <script src="config.js"></script>
+    <script src="main.js"></script>
+    <style>
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #909090;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body style="line-height: 25px">
+    <h2>Siklu Config Generator</h2><small>Version 2 | Updated 6 June 2018</small>
+    <p><a href="https://vivint.atlassian.net/wiki/spaces/NM/pages/141700685">Instructions</a></p>
+    <p>
+        This tool generates a configuration script for Siklu EtherHaul radios to be used for the Utah CBNL to Siklu transitions.<br />
+        For an EtherHaul 1200TL, local management is configured on port eth2. For an EtherHaul 2500FX, use port eth4.<br />
+        Script should be run while connected to port eth2, regardless of radio model.<br /><br />
+        To generate a configuration for 2.0 (UT20/200), select "2.0 EH2500FX" below.
+    </p>
+    <div id="form">
+        <form id="form">
+            <!--<input type="checkbox" id="advancedCheck" name="advancedCheck" onclick="toggleAdvanced()" > Advanced Config<br /><br />-->
+            Radio Model:
+            <select name="radioModel" onchange="toggleRadio(this)">
+                <option value="EH1200TL">EtherHaul 1200TL</option>
+                <option value="EH2500FX">EtherHaul 2500FX</option>
+                <option value="EH2500FX2" selected>2.0 EtherHaul 2500FX</option>
+            </select><br /><br />
+            System Name:<br /><input type="text" name="systemName" size="35" placeholder="UT.LEH.M9935.BH.SI.1200TL.UT.LEH.M9936"><br />
+            IP Address (CIDR): <input type="text" name="ipAddress" size="15" placeholder="10.232.24.49/22"><br />
+            <!--<div id="advancedForm" style="display:none">
+                Management VLAN: <input type="text" name="managementVlan" value="2" size="2">
+                <input type="checkbox" name="eth2Pvid" checked> Use as PVID for eth2?<br />
+                <input type="checkbox" name="modTable" id="modTable" checked> Include modulation table?
+            </div>-->
+            <div id="form1200" style="display:none">
+                Frequency:
+                <select name="eh1200Frequency">
+                    <option value="71375">71375</option>
+                    <option value="71875">71875</option>
+                    <option value="72375">72375</option>
+                    <option value="72875">72875</option>
+                    <option value="73375">73375</option>
+                    <option value="73875">73875</option>
+                    <option value="74375">74375</option>
+                    <option value="74875">74875</option>
+                    <option value="75375">75375</option>
+                </select>
+                Asymmetry:
+                <select name="eh1200Asymmetrical">
+                    <option value="75tx-25rx">75tx-25rx</option>
+                    <option value="25tx-75rx">25tx-75rx</option>
+                    <option value="50tx-50rx">50tx-50rx</option>
+                </select><br />
+            </div>
+            <div id="form2500">
+                TX Frequency:
+                <select name="eh2500Frequency" id="eh2500Frequency">
+                    <option value="null">Select channel width/band</option>
+                </select>
+                Channel Width/Band:
+                <select name="eh2500ChannelWidth" onchange="toggle2500Frequency(this)">
+                    <option value="null">Select</option>
+                    <option value="250High">250 High</option>
+                    <option value="500High">500 High</option>
+                    <option value="750High">750 High</option>
+                    <option value="1250High">1250 High</option>
+                    <option value="250Low">250 Low</option>
+                    <option value="500Low">500 Low</option>
+                    <option value="750Low">750 Low</option>
+                    <option value="1250Low">1250 Low</option>
+                </select>
+                TX Power:
+                <input type="text" name="eh2500TxPower" size="3" value="-5"></input>
+            </div>
+            <div id="form2500-2">
+                Port Configuration:
+                <select name="eh2500PortConfig">
+                    <option value="north" selected>Uplink (eNB/Customer)</option>
+                    <option value="south">Downlink (Raspberry Pi)</option>
+                </select>
+            </div>
+            <input type="button" name="submit" value="Submit" onclick="generateConfig(this.form);" />
+        </form>
+    </div>
+    <br /><hr />
+    <div class="loader" id="loader" style="display:none"></div>
+    <div id="display">
+    </div>
+</body>
