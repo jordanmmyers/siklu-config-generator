@@ -140,7 +140,8 @@ function generateConfig(form) {
 			"set vlan c5 undef egress eth3,s1 untagged none history disable",
 			"set vlan c6 1-2 egress eth4,s1 untagged none history disable",
 			"set vlan c6 200 egress eth4,s1 untagged none history disable",
-			"set vlan c6 undef egress eth4,s1 untagged none history disable"
+			"set vlan c6 undef egress eth4,s1 untagged none history disable",
+            "set bridge-port c4 eth2 pvid 2",
 		];
 	}
 
@@ -347,7 +348,6 @@ function generateConfig(form) {
 				"set bridge c5 vlan-ethertype 0x8100",
 				"set bridge c6 vlan-ethertype 0x8100",
 				vlans,
-				"set bridge-port c6 eth4 pvid 2",
 				"",
 				"# Setup IP parameters",
 				ipAddress,
